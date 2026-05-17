@@ -3,195 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación Fotorrealista: Humano vs Razas de Osos</title>
+    <title>Comparador Realista: Humano vs Osos</title>
     <style>
         :root {
-            --primary: #1a2c42;
-            --accent: #d4a017;
-            --bg: #0d1117;
-            --card-bg: #161b22;
-            --text: #ecf0f1;
+            --primary: #1e293b;
+            --accent: #b45309;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: var(--bg);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text);
-            display: flex;
-            justify-content: center;
         }
 
         .container {
-            max-width: 1300px;
-            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         h1 {
             text-align: center;
-            color: var(--accent);
-            margin-bottom: 25px;
+            color: #f59e0b;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .dashboard {
             display: grid;
-            grid-template-columns: 320px 1fr 320px;
-            gap: 20px;
-            align-items: start;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
 
-        @media (max-width: 980px) {
+        @media (min-width: 768px) {
             .dashboard {
-                grid-template-columns: 1fr;
-            }
-            .canvas-container {
-                order: -1;
-                height: 500px !important;
+                grid-template-columns: 280px 1fr 280px;
             }
         }
 
         .panel {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .panel h2 {
             margin-top: 0;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 12px;
-            color: var(--accent);
-            font-size: 1.4rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+            color: #f59e0b;
         }
 
         .control-group {
-            margin-bottom: 22px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 0.95em;
-            color: rgba(236, 240, 241, 0.8);
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #cbd5e1;
         }
 
         input[type="range"] {
             width: 100%;
-            margin-bottom: 8px;
-            background: transparent;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-            margin-top: -6px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        input[type="range"]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 6px;
-            background: #2a3b55;
-            border-radius: 3px;
         }
 
         select, button {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #475569;
             font-size: 1rem;
-            margin-bottom: 12px;
-            background-color: #21262d;
-            color: var(--text);
-            font-family: inherit;
-        }
-
-        select:focus, button:focus {
-            outline: none;
-            border-color: var(--accent);
+            background-color: #334155;
+            color: white;
         }
 
         button {
             background-color: var(--accent);
-            color: #000;
             border: none;
             cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            font-weight: bold;
         }
 
         button:hover {
-            background-color: #f1c40f;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(212, 160, 23, 0.4);
+            background-color: #d97706;
         }
 
         .canvas-container {
-            background: #000;
-            height: 650px;
-            border-radius: 15px;
+            background: linear-gradient(to bottom, #1e1b4b, #311005);
+            height: 450px;
+            border-radius: 12px;
             position: relative;
             overflow: hidden;
-            border: 2px solid #2a3b55;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            border: 2px solid #475569;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
         }
 
-        #realtime-canvas {
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 15px;
+            background-color: #022c22;
+        }
+
+        .display-area {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            width: 100%;
+            height: 85%;
+            padding: 0 20px;
+            z-index: 2;
+        }
+
+        .character {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .sprite {
             width: 100%;
             height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            transition: all 0.2s ease;
         }
 
-        /* Overlay para las etiquetas de datos */
-        .overlay-stats {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            pointer-events: none;
-            z-index: 10;
+        /* Imágenes de alta calidad integradas en SVG */
+        .human-male .sprite {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'><path d='M50,20 A10,10 0 1,0 50,40 A10,10 0 1,0 50,20 M40,45 L60,45 L58,110 L52,110 L54,190 L46,190 L48,110 L42,110 Z' fill='%23ffdbac'/><path d='M40,45 L60,45 L58,100 L42,100 Z' fill='%232563eb'/><path d='M42,100 L50,100 L46,185 L40,185 Z' fill='%231e293b'/><path d='M50,100 L58,100 L60,185 L54,185 Z' fill='%231e293b'/></svg>");
         }
 
-        .stat-box {
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.9em;
+        .human-female .sprite {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'><path d='M50,22 A9,9 0 1,0 50,40 A9,9 0 1,0 50,22 M42,45 L58,45 L62,95 L38,95 Z' fill='%23db2777'/><path d='M38,95 L62,95 L56,185 L44,185 Z' fill='%23475569'/><path d='M48,42 L52,42 L52,185 L48,185 Z' fill='%23fbcfe8'/></svg>");
+        }
+
+        /* Oso pardo / grizzly / kodiak */
+        .bear-brown .sprite {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 250'><path d='M75,20 C60,20 45,35 45,60 C45,85 50,110 35,130 C20,150 25,230 45,240 C65,245 85,245 105,240 C125,230 130,150 115,130 C100,110 105,85 105,60 C105,35 90,20 75,20 Z' fill='%23452c1e'/><ellipse cx='75' cy='45' rx='25' ry='20' fill='%235c3a21'/><circle cx='60' cy='15' r='8' fill='%23452c1e'/><circle cx='90' cy='15' r='8' fill='%23452c1e'/></svg>");
+        }
+
+        /* Oso polar */
+        .bear-white .sprite {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 250'><path d='M75,20 C58,20 40,40 40,70 C40,95 45,115 30,135 C15,155 20,230 40,240 C60,245 90,245 110,240 C130,230 135,155 120,135 C105,115 110,95 110,70 C110,40 92,20 75,20 Z' fill='%23f1f5f9'/><ellipse cx='75' cy='50' rx='28' ry='22' fill='%23e2e8f0'/><circle cx='58' cy='18' r='9' fill='%23f1f5f9'/><circle cx='92' cy='18' r='9' fill='%23f1f5f9'/></svg>");
+        }
+
+        /* Oso negro */
+        .bear-black .sprite {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 250'><path d='M75,20 C62,20 48,32 48,55 C48,78 52,105 38,125 C24,145 28,225 46,235 C64,240 86,240 104,235 C122,225 126,145 112,125 C98,105 102,78 102,55 C102,32 88,20 75,20 Z' fill='%231e293b'/><ellipse cx='75' cy='45' rx='22' ry='18' fill='%23334155'/><circle cx='62' cy='16' r='7' fill='%231e293b'/><circle cx='88' cy='16' r='7' fill='%231e293b'/></svg>");
+        }
+
+        .label-tag {
+            background: rgba(15, 23, 42, 0.9);
+            color: #f59e0b;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            margin-top: 5px;
             text-align: center;
-            border: 1px solid rgba(212, 160, 23, 0.4);
+            border: 1px solid #475569;
+            font-weight: bold;
         }
 
-        .stat-box strong {
-            color: var(--accent);
-            display: block;
-            margin-bottom: 3px;
+        .stats-display {
+            font-size: 0.75em;
+            color: #94a3b8;
+            margin-top: 2px;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-    <h1>Simulación Fotorrealista: Humano vs Osos</h1>
+    <h1>Comparador de Tamaño: Humano vs Osos</h1>
     
     <div class="dashboard">
         <div class="panel">
-            <h2>Humano Realista</h2>
+            <h2>Humano</h2>
             <div class="control-group">
                 <label for="genderSelect">Género</label>
                 <select id="genderSelect" onchange="updateSimulation()">
@@ -200,31 +204,33 @@
                 </select>
             </div>
             <div class="control-group">
-                <label>Altura (m): <span id="humanHeightVal">1.75</span> m</label>
-                <input type="range" id="humanHeight" min="1.0" max="2.3" step="0.01" value="1.75" oninput="updateSimulation()">
+                <label>Altura: <span id="humanHeightVal">1.75</span> m</label>
+                <input type="range" id="humanHeight" min="1.0" max="2.2" step="0.01" value="1.75" oninput="updateSimulation()">
             </div>
             <div class="control-group">
-                <label>Peso (kg): <span id="humanWeightVal">75</span> kg</label>
-                <input type="range" id="humanWeight" min="40" max="160" step="1" value="75" oninput="updateSimulation()">
+                <label>Peso: <span id="humanWeightVal">75</span> kg</label>
+                <input type="range" id="humanWeight" min="40" max="150" step="1" value="75" oninput="updateSimulation()">
             </div>
         </div>
 
         <div class="canvas-container">
-            <canvas id="realtime-canvas"></canvas>
-            <div class="overlay-stats">
-                <div class="stat-box">
-                    <strong>HUMANO</strong>
-                    <span id="humanStats">1.75m / 75kg</span>
+            <div class="display-area">
+                <div id="humanChar" class="character human-male">
+                    <div class="sprite"></div>
+                    <span class="label-tag">Humano</span>
+                    <span class="stats-display" id="humanStats">1.75m / 75kg</span>
                 </div>
-                <div class="stat-box">
-                    <strong id="bearLabel">OSO GRIZZLY</strong>
-                    <span id="bearStats">2.10m / 270kg</span>
+                <div id="bearChar" class="character bear-brown">
+                    <div class="sprite"></div>
+                    <span class="label-tag" id="bearLabel">Oso Grizzly</span>
+                    <span class="stats-display" id="bearStats">2.10m / 270kg</span>
                 </div>
             </div>
+            <div class="ground"></div>
         </div>
 
         <div class="panel">
-            <h2>Oso Fotorrealista</h2>
+            <h2>Oso</h2>
             <div class="control-group">
                 <label for="bearBreed">Especie de Oso</label>
                 <select id="bearBreed" onchange="changeBearBreed()">
@@ -236,264 +242,86 @@
                 </select>
             </div>
             <button onclick="setToAverage()">Valores Promedio</button>
-            <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <hr style="border:0; border-top: 1px solid #475569; margin: 15px 0;">
             <div class="control-group">
-                <label>Altura (de pie, m): <span id="bearHeightVal">2.10</span> m</label>
-                <input type="range" id="bearHeight" min="1.5" max="3.5" step="0.01" value="2.10" oninput="updateSimulation()">
+                <label>Altura (en 2 patas): <span id="bearHeightVal">2.10</span> m</label>
+                <input type="range" id="bearHeight" min="1.4" max="3.5" step="0.01" value="2.10" oninput="updateSimulation()">
             </div>
             <div class="control-group">
-                <label>Peso (kg): <span id="bearWeightVal">270</span> kg</label>
-                <input type="range" id="bearWeight" min="90" max="900" step="10" value="270" oninput="updateSimulation()">
+                <label>Peso: <span id="bearWeightVal">270</span> kg</label>
+                <input type="range" id="bearWeight" min="60" max="800" step="5" value="270" oninput="updateSimulation()">
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
 <script>
-    // Variables principales de Three.js
-    let scene, camera, renderer, controls, humanModel, bearModel;
-    const canvas = document.getElementById('realtime-canvas');
-
-    // Base de datos biológica de los osos (Valores promedio y límites)
     const bearData = {
-        grizzly: {
-            name: "Oso Grizzly",
-            avgHeight: 2.10, avgWeight: 270,
-            minHeight: 1.7, maxHeight: 2.8,
-            minWeight: 130, maxWeight: 450,
-            color: 0x5c4033, texture: 'https://threejs.org/examples/textures/terrain/grasslight-big.jpg' // Placeholder
-        },
-        polar: {
-            name: "Oso Polar",
-            avgHeight: 2.60, avgWeight: 500,
-            minHeight: 2.1, maxHeight: 3.2,
-            minWeight: 180, maxWeight: 800,
-            color: 0xf0f0f0, texture: null
-        },
-        pardo_eur: {
-            name: "Oso Pardo Europeo",
-            avgHeight: 2.00, avgWeight: 210,
-            minHeight: 1.6, maxHeight: 2.6,
-            minWeight: 110, maxWeight: 350,
-            color: 0x6e4d3a, texture: null
-        },
-        kodiak: {
-            name: "Oso Kodiak",
-            avgHeight: 2.90, avgWeight: 550,
-            minHeight: 2.4, maxHeight: 3.4,
-            minWeight: 250, maxWeight: 900,
-            color: 0x4e3629, texture: null
-        },
-        negro: {
-            name: "Oso Negro Americano",
-            avgHeight: 1.70, avgWeight: 150,
-            minHeight: 1.3, maxHeight: 2.1,
-            minWeight: 70, maxWeight: 320,
-            color: 0x1a1a1a, texture: null
-        }
+        grizzly: { name: "Oso Grizzly", avgHeight: 2.10, avgWeight: 270, minHeight: 1.6, maxHeight: 2.7, minWeight: 130, maxWeight: 400, style: "bear-brown" },
+        polar: { name: "Oso Polar", avgHeight: 2.60, avgWeight: 480, minHeight: 2.0, maxHeight: 3.4, minWeight: 150, maxWeight: 800, style: "bear-white" },
+        pardo_eur: { name: "Oso Pardo Europeo", avgHeight: 2.00, avgWeight: 220, minHeight: 1.5, maxHeight: 2.5, minWeight: 100, maxWeight: 350, style: "bear-brown" },
+        kodiak: { name: "Oso Kodiak", avgHeight: 2.80, avgWeight: 550, minHeight: 2.2, maxHeight: 3.5, minWeight: 200, maxWeight: 800, style: "bear-brown" },
+        negro: { name: "Oso Negro Americano", avgHeight: 1.65, avgWeight: 130, minHeight: 1.2, maxHeight: 2.1, minWeight: 60, maxWeight: 280, style: "bear-black" }
     };
 
-    // Inicialización de la escena 3D
-    function init3D() {
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x050505);
-        scene.fog = new THREE.Fog(0x050505, 5, 15);
-
-        // Cámara
-        camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-        camera.position.set(0, 1.8, 6); // Altura de los ojos
-
-        // Renderer
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // Controles de cámara
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.minDistance = 2;
-        controls.maxDistance = 10;
-        controls.maxPolarAngle = Math.PI / 2 - 0.1; // No bajar del suelo
-
-        // Iluminación realista (Studio setup)
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        scene.add(ambientLight);
-
-        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        mainLight.position.set(5, 5, 5);
-        mainLight.castShadow = true;
-        mainLight.shadow.mapSize.width = 1024;
-        mainLight.shadow.mapSize.height = 1024;
-        mainLight.shadow.camera.near = 0.5;
-        mainLight.shadow.camera.far = 20;
-        scene.add(mainLight);
-
-        const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
-        fillLight.position.set(-5, 3, -2);
-        scene.add(fillLight);
-
-        // Suelo realista (Tierra/Hierba)
-        const groundGeometry = new THREE.CircleGeometry(10, 64);
-        const groundMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x2c3e50,
-            roughness: 0.9,
-            metalness: 0.1
-        });
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = -Math.PI / 2;
-        ground.receiveShadow = true;
-        scene.add(ground);
-
-        // Grid helper para referencia de escala
-        const gridHelper = new THREE.GridHelper(10, 10, 0x444444, 0x222222);
-        scene.add(gridHelper);
-
-        // Creación de modelos fotorrealistas (Placeholders avanzados con MeshStandardMaterial)
-        
-        // 1. Modelo Humano Realista (Placeholder detallado)
-        const humanGeometry = new THREE.CylinderGeometry(0.25, 0.2, 1.75, 16); // Altura base 1.75
-        humanGeometry.translate(0, 1.75/2, 0); // Pivote en los pies
-        const humanMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xe0ac69, 
-            roughness: 0.6,
-            metalness: 0.0
-        });
-        humanModel = new THREE.Mesh(humanGeometry, humanMaterial);
-        humanModel.position.set(-0.8, 0, 0);
-        humanModel.castShadow = true;
-        humanModel.receiveShadow = true;
-        scene.add(humanModel);
-
-        // 2. Modelo Oso Realista (Placeholder detallado con joroba)
-        const bearGeometry = new THREE.BoxGeometry(0.9, 2.1, 0.7); // Dimensiones base Grizzly de pie
-        bearGeometry.translate(0, 2.1/2, 0); // Pivote en los pies
-        
-        // Añadir joroba distintiva del Grizzly
-        const humpGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-        humpGeometry.translate(0, 1.7, 0);
-        bearGeometry.merge(humpGeometry); // Combinar geometrías
-
-        bearModel = new THREE.Mesh(bearGeometry, new THREE.MeshStandardMaterial());
-        bearModel.position.set(0.8, 0, 0);
-        bearModel.castShadow = true;
-        bearModel.receiveShadow = true;
-        scene.add(bearModel);
-
-        // Iniciar loop de renderizado
-        animate();
-        
-        // Configuración inicial
-        changeBearBreed();
-    }
-
-    // Loop de animación
-    function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-    }
-
-    // Al cambiar la raza del oso, redefinimos los límites y el modelo visual
     function changeBearBreed() {
         const breed = document.getElementById("bearBreed").value;
         const data = bearData[breed];
         
-        const heightSlider = document.getElementById("bearHeight");
-        const weightSlider = document.getElementById("bearWeight");
-
-        heightSlider.min = data.minHeight;
-        heightSlider.max = data.maxHeight;
-        weightSlider.min = data.minWeight;
-        weightSlider.max = data.maxWeight;
-
-        // Actualizar material del oso (color/textura)
-        const bearMaterial = bearModel.material;
-        bearMaterial.color.setHex(data.color);
-        bearMaterial.roughness = 0.9;
-        
-        // Ajustar geometría si es polar (más alargado) o negro (más estilizado)
-        if (breed === 'polar') {
-            bearModel.scale.set(1.1, 1, 0.9); // Más ancho y estilizado
-        } else if (breed === 'negro') {
-            bearModel.scale.set(0.9, 1, 0.8); // Más pequeño y compacto
-        } else {
-            bearModel.scale.set(1, 1, 1); // Reset
-        }
+        document.getElementById("bearHeight").min = data.minHeight;
+        document.getElementById("bearHeight").max = data.maxHeight;
+        document.getElementById("bearWeight").min = data.minWeight;
+        document.getElementById("bearWeight").max = data.maxWeight;
 
         setToAverage();
     }
 
-    // Lleva al oso seleccionado a sus valores biológicos promedio
     function setToAverage() {
         const breed = document.getElementById("bearBreed").value;
-        const data = bearData[breed];
-
-        document.getElementById("bearHeight").value = data.avgHeight;
-        document.getElementById("bearWeight").value = data.avgWeight;
-
+        document.getElementById("bearHeight").value = bearData[breed].avgHeight;
+        document.getElementById("bearWeight").value = bearData[breed].avgWeight;
         updateSimulation();
     }
 
-    // Actualiza los datos y la escala fotorrealista en la escena 3D
     function updateSimulation() {
-        // --- Datos del Humano ---
-        const humanHeight = parseFloat(document.getElementById("humanHeight").value);
-        const humanWeight = parseInt(document.getElementById("humanWeight").value);
+        // Humano
+        const hH = parseFloat(document.getElementById("humanHeight").value);
+        const hW = parseInt(document.getElementById("humanWeight").value);
         const gender = document.getElementById("genderSelect").value;
         
-        document.getElementById("humanHeightVal").innerText = humanHeight.toFixed(2);
-        document.getElementById("humanWeightVal").innerText = humanWeight;
-        
-        document.getElementById("humanStats").innerText = `${humanHeight.toFixed(2)}m / ${humanWeight}kg`;
+        document.getElementById("humanHeightVal").innerText = hH.toFixed(2);
+        document.getElementById("humanWeightVal").innerText = hW;
+        document.getElementById("humanChar").className = `character human-${gender}`;
+        document.getElementById("humanStats").innerText = `${hH.toFixed(2)}m / ${hW}kg`;
 
-        // Actualizar color de piel según género (Placeholder simple)
-        humanModel.material.color.setHex(gender === 'male' ? 0xe0ac69 : 0xffdab9);
-
-        // --- Datos del Oso ---
+        // Oso
         const breed = document.getElementById("bearBreed").value;
-        const bearHeight = parseFloat(document.getElementById("bearHeight").value);
-        const bearWeight = parseInt(document.getElementById("bearWeight").value);
+        const bH = parseFloat(document.getElementById("bearHeight").value);
+        const bW = parseInt(document.getElementById("bearWeight").value);
         
-        document.getElementById("bearHeightVal").innerText = bearHeight.toFixed(2);
-        document.getElementById("bearWeightVal").innerText = bearWeight;
-        
-        document.getElementById("bearLabel").innerText = bearData[breed].name.toUpperCase();
-        document.getElementById("bearStats").innerText = `${bearHeight.toFixed(2)}m / ${bearWeight}kg`;
+        document.getElementById("bearHeightVal").innerText = bH.toFixed(2);
+        document.getElementById("bearWeightVal").innerText = bW;
+        document.getElementById("bearLabel").innerText = bearData[breed].name;
+        document.getElementById("bearChar").className = `character ${bearData[breed].style}`;
+        document.getElementById("bearStats").innerText = `${bH.toFixed(2)}m / ${bW}kg`;
 
-        // --- Escala Fotorrealista 3D ---
+        // Lógica de Escalas Reales
+        const maxSimHeight = 3.6; // Altura máxima del contenedor en metros
         
-        // 1. Escalar Humano
-        // La altura base de la geometría es 1.75m. Escalamiento en Y.
-        const humanScaleY = humanHeight / 1.75;
-        // El ancho (X, Z) se escala ligeramente con el peso
-        const humanScaleXZ = 1.0 + (humanWeight - 75) / 300; 
-        humanModel.scale.set(humanScaleXZ, humanScaleY, humanScaleXZ);
+        const humanVisualHeight = (hH / maxSimHeight) * 100;
+        const bearVisualHeight = (bH / maxSimHeight) * 100;
 
-        // 2. Escalar Oso
-        // La altura base de la geometría es 2.1m (Grizzly).
-        const bearScaleY = bearHeight / 2.1;
-        // La masividad (ancho X, Z) se escala más drásticamente con el peso
-        const bearScaleXZ = 1.0 + (bearWeight - 270) / 700; // max ~1.9x masividad
-        bearModel.scale.set(bearScaleXZ, bearScaleY, bearScaleXZ);
+        // El ancho se deforma según el peso para dar sensación de corpulencia
+        const humanVisualWidth = 50 + ((hW - 40) / 110) * 40; 
+        const bearVisualWidth = 100 + ((bW - 60) / 740) * 120;
+
+        document.getElementById("humanChar").style.height = `${humanVisualHeight}%`;
+        document.getElementById("humanChar").style.width = `${humanVisualWidth}px`;
+        document.getElementById("bearChar").style.height = `${bearVisualHeight}%`;
+        document.getElementById("bearChar").style.width = `${bearVisualWidth}px`;
     }
 
-    // Manejar redimensionado de ventana
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    }
-
-    // Iniciar todo
-    init3D();
+    changeBearBreed();
 </script>
 
 </body>
