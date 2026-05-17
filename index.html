@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparador 3D Procedural: Humano vs Osos</title>
+    <title>Comparador 3D Ultra 4K: Humano vs Osos</title>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --panel-bg: rgba(22, 27, 34, 0.85);
-            --text-main: #e6edf3;
-            --accent: #ff7b00;
+            --bg-color: #060913;
+            --panel-bg: rgba(10, 15, 30, 0.92);
+            --text-main: #f0f4f8;
+            --accent: #ff8c00;
         }
 
         body {
             margin: 0;
             overflow: hidden;
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
         }
@@ -25,84 +25,89 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 55vh;
             z-index: 1;
         }
 
         .ui-layer {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 45vh;
             z-index: 2;
-            pointer-events: none;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .panel {
             background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            width: 320px;
-            pointer-events: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-height: 90vh;
+            backdrop-filter: blur(15px);
+            border-top: 2px solid rgba(255, 140, 0, 0.3);
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.8);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 12px;
+            box-sizing: border-box;
+            gap: 12px;
             overflow-y: auto;
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
+            #canvas-container { height: 100vh; }
             .ui-layer {
-                flex-direction: column;
-                justify-content: flex-start;
-                gap: 10px;
+                top: 20px;
+                right: 20px;
+                bottom: auto;
+                left: auto;
+                width: 360px;
+                height: auto;
+                max-height: 90vh;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 140, 0, 0.3);
+                grid-template-columns: 1fr;
             }
-            .panel {
-                width: 100%;
-                padding: 15px;
-            }
+        }
+
+        .section-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         h2 {
-            margin-top: 0;
+            margin: 0 0 4px 0;
             color: var(--accent);
-            font-size: 1.2rem;
+            font-size: 0.95rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 123, 0, 0.3);
-            padding-bottom: 10px;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
+            padding-bottom: 4px;
         }
 
         .control {
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: #8b949e;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+            color: #a0aec0;
         }
 
         input[type="range"] {
             width: 100%;
+            margin: 2px 0;
             accent-color: var(--accent);
         }
 
         select, button {
             width: 100%;
-            padding: 10px;
-            background: #21262d;
+            padding: 8px;
+            background: #0f1424;
             color: white;
-            border: 1px solid #30363d;
+            border: 1px solid #232d4b;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.85rem;
+            box-sizing: border-box;
         }
 
         button {
@@ -110,19 +115,34 @@
             color: #000;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            border: none;
+            margin-top: 2px;
         }
 
         button:hover {
-            background: #e66e00;
+            background: #e07b00;
         }
 
-        .hint {
-            font-size: 0.75rem;
-            color: #ff7b00;
-            margin-top: -5px;
-            margin-bottom: 10px;
-            display: block;
+        .toggle-group {
+            display: flex;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .toggle-btn {
+            background: #0f1424;
+            color: #a0aec0;
+            border: 1px solid #232d4b;
+            padding: 6px;
+            font-size: 0.8rem;
+            flex: 1;
+            margin: 0;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
         }
     </style>
 </head>
@@ -131,40 +151,44 @@
 <div id="canvas-container"></div>
 
 <div class="ui-layer">
-    <div class="panel">
-        <h2>Humano (3D Dinámico)</h2>
+    <div class="section-box">
+        <h2>Humano Estilizado</h2>
         <div class="control">
-            <label>Altura: <span id="valHHeight">1.75m</span></label>
+            <label>Altura (Eje Vertical): <span id="valHHeight">1.75m</span></label>
             <input type="range" id="hHeight" min="1.4" max="2.2" step="0.01" value="1.75">
         </div>
         <div class="control">
-            <label>Peso (Masa): <span id="valHWeight">75kg</span></label>
+            <label>Peso (Ancho/Masa): <span id="valHWeight">75kg</span></label>
             <input type="range" id="hWeight" min="40" max="160" step="1" value="75">
         </div>
-        <span class="hint">*Sube el peso para ver cómo se ensancha la musculatura/grasa.</span>
     </div>
 
-    <div class="panel">
-        <h2>Oso (3D Dinámico)</h2>
+    <div class="section-box">
+        <h2>Oso Analítico</h2>
         <div class="control">
             <select id="bearType">
                 <option value="grizzly">Oso Grizzly</option>
                 <option value="polar">Oso Polar</option>
                 <option value="kodiak">Oso Kodiak</option>
-                <option value="negro">Oso Negro Americano</option>
+                <option value="negro">Oso Negro</option>
             </select>
         </div>
-        <button id="btnAverage">Valores Biológicos Reales</button>
-        <hr style="border-color: #30363d; margin: 15px 0;">
         <div class="control">
-            <label>Altura (de pie): <span id="valBHeight">2.10m</span></label>
-            <input type="range" id="bHeight" min="1.3" max="3.5" step="0.01" value="2.10">
+            <label>Postura Biológica:</label>
+            <div class="toggle-group">
+                <button class="toggle-btn active" id="poseStanding">De Pie</button>
+                <button class="toggle-btn" id="poseWalking">4 Patas</button>
+            </div>
         </div>
         <div class="control">
-            <label>Peso (Masa): <span id="valBWeight">270kg</span></label>
+            <label><span id="lblBearHeight">Altura total:</span> <span id="valBHeight">2.10m</span></label>
+            <input type="range" id="bHeight" min="1.0" max="3.5" step="0.01" value="2.10">
+        </div>
+        <div class="control">
+            <label>Peso (Ancho/Masa): <span id="valBWeight">270kg</span></label>
             <input type="range" id="bWeight" min="60" max="900" step="5" value="270">
         </div>
-        <span class="hint">*Sube el peso y verás la brutal masividad de la bestia.</span>
+        <button id="btnAverage">Medidas Oficiales</button>
     </div>
 </div>
 
@@ -172,178 +196,288 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-    // --- SETUP BÁSICO ---
+    // --- ESCENA EN ALTA RESOLUCIÓN (4K) ---
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0d1117);
-    scene.fog = new THREE.FogExp2(0x0d1117, 0.04);
+    scene.background = new THREE.Color(0x060913);
+    scene.fog = new THREE.FogExp2(0x060913, 0.04);
 
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 2, 8);
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / (window.innerHeight * 0.55), 0.1, 100);
+    camera.position.set(0, 1.5, 6.8);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Ajuste de nitidez tipo Retina/4K
+    renderer.setSize(window.innerWidth, window.innerHeight * 0.55);
+    if (window.innerWidth >= 768) {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.target.set(0, 1.2, 0);
-    controls.maxPolarAngle = Math.PI / 2;
+    controls.target.set(0, 0.9, 0);
+    controls.maxPolarAngle = Math.PI / 2 - 0.05;
 
-    // --- ILUMINACIÓN REALISTA ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // --- ILUMINACIÓN ESTUDIO CINEMATOGRÁFICO ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffeedd, 1.2);
-    dirLight.position.set(5, 10, 5);
+    // Luz Principal (Cálida)
+    const dirLight = new THREE.DirectionalLight(0xfff2e0, 1.4);
+    dirLight.position.set(5, 9, 4);
     dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
+    dirLight.shadow.mapSize.width = 2048; // Sombras ultra definidas
+    dirLight.shadow.mapSize.height = 2048;
     scene.add(dirLight);
 
-    const backLight = new THREE.PointLight(0x4466ff, 0.8);
-    backLight.position.set(-5, 2, -5);
-    scene.add(backLight);
+    // Luz de Relleno (Azulada para contrastar sombras)
+    const fillLight = new THREE.DirectionalLight(0x5577ff, 0.6);
+    fillLight.position.set(-5, 4, -2);
+    scene.add(fillLight);
+
+    // Luz de Contra (Rim Light para efecto 4K de silueta brillante)
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    rimLight.position.set(-2, 8, -5);
+    scene.add(rimLight);
 
     // --- SUELO ---
-    const floorGeo = new THREE.PlaneGeometry(50, 50);
-    const floorMat = new THREE.MeshStandardMaterial({ color: 0x161b22, roughness: 0.9 });
+    const floorGeo = new THREE.PlaneGeometry(40, 40);
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x0a0f1d, roughness: 0.85 });
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const grid = new THREE.GridHelper(50, 50, 0xff7b00, 0x30363d);
-    grid.position.y = 0.01;
+    const grid = new THREE.GridHelper(40, 40, 0xff8c00, 0x141b30);
+    grid.position.y = 0.005;
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
     scene.add(grid);
 
-    // --- CONSTRUCTORES PROCEDURALES (Magia Pura de Código) ---
+    // --- MODELADO HUMANO DETALLADO (CON ROPA Y GORRA) ---
     function createHuman() {
         const group = new THREE.Group();
-        const mat = new THREE.MeshStandardMaterial({ color: 0xe0ac69, roughness: 0.6 });
         
-        const head = new THREE.Mesh(new THREE.SphereGeometry(0.12, 32, 32), mat);
-        head.position.y = 1.65;
-        const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.15, 0.6, 32), mat);
+        // Materiales de alta calidad
+        const skinMat = new THREE.MeshStandardMaterial({ color: 0xe2a775, roughness: 0.4 });
+        const shirtMat = new THREE.MeshStandardMaterial({ color: 0x2b323f, roughness: 0.7 }); // Camiseta Gris Oscuro
+        const pantsMat = new THREE.MeshStandardMaterial({ color: 0x1d3557, roughness: 0.8 }); // Vaqueros Azules
+        const capMat = new THREE.MeshStandardMaterial({ color: 0xd9381e, roughness: 0.6 });   // Gorra Roja
+
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.11, 32, 32), skinMat);
+        head.position.y = 1.63;
+
+        // Gorra de visera
+        const capDom = new THREE.Mesh(new THREE.SphereGeometry(0.115, 32, 32, 0, Math.PI*2, 0, Math.PI/2), capMat);
+        capDom.position.set(0, 1.65, 0);
+        const visor = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.015, 0.1), capMat);
+        visor.position.set(0, 1.66, 0.1);
+        head.add(capDom, visor);
+
+        const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.13, 0.58, 32), shirtMat);
         torso.position.y = 1.25;
-        const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, 0.65, 16), mat);
-        armL.position.set(-0.25, 1.2, 0);
-        const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, 0.65, 16), mat);
-        armR.position.set(0.25, 1.2, 0);
-        const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.85, 16), mat);
-        legL.position.set(-0.09, 0.425, 0);
-        const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.85, 16), mat);
+
+        const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.035, 0.6, 24), shirtMat);
+        armL.position.set(-0.23, 1.2, 0);
+        const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.035, 0.6, 24), shirtMat);
+        armR.position.set(0.23, 1.2, 0);
+
+        const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.045, 0.85, 24), pantsMat);
+        legL.position.set(-0.08, 0.425, 0);
+        const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.045, 0.85, 24), pantsMat);
         legR.position.set(0.09, 0.425, 0);
 
         group.add(head, torso, armL, armR, legL, legR);
         group.traverse(c => { if(c.isMesh) { c.castShadow = true; c.receiveShadow = true; }});
-        
-        group.scale.set(1/1.75, 1/1.75, 1/1.75); // Normaliza a 1 metro
+        group.scale.set(1, 1, 1); // La escala se gestionará de manera pura por código externo
         return group;
     }
 
+    // Piezas globales del oso para animación anatómica precisa
+    let bearParts = {};
+
     function createBear() {
         const group = new THREE.Group();
-        const mat = new THREE.MeshStandardMaterial({ color: 0x4a2e15, roughness: 0.9 });
-        group.userData.material = mat; // Guardar referencia para cambiar el color luego
+        // Material con alta rugosidad para simular absorción de luz del pelaje
+        const mat = new THREE.MeshStandardMaterial({ roughness: 0.95, metalness: 0.05 });
+        group.userData.material = mat;
         
-        const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.45, 1.3, 32), mat);
-        torso.position.y = 1.1;
-        const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 32, 32), mat);
-        head.position.set(0, 1.85, 0.15);
-        const snout = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.25, 16), mat);
-        snout.rotation.x = Math.PI / 2;
-        snout.position.set(0, 1.8, 0.35);
-        const earL = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), mat);
-        earL.position.set(-0.18, 2.05, 0.1);
-        const earR = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), mat);
-        earR.position.set(0.18, 2.05, 0.1);
-        const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 0.8, 16), mat);
-        armL.position.set(-0.45, 1.2, 0.1);
-        armL.rotation.z = Math.PI/6;
-        const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 0.8, 16), mat);
-        armR.position.set(0.45, 1.2, 0.1);
-        armR.rotation.z = -Math.PI/6;
-        const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.12, 0.7, 16), mat);
-        legL.position.set(-0.2, 0.35, 0);
-        const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.12, 0.7, 16), mat);
-        legR.position.set(0.2, 0.35, 0);
+        bearParts.torso = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.46, 1.25, 32), mat);
+        bearParts.head = new THREE.Mesh(new THREE.SphereGeometry(0.24, 32, 32), mat);
+        bearParts.snout = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.24, 24), mat);
+        bearParts.earL = new THREE.Mesh(new THREE.SphereGeometry(0.075, 24, 24), mat);
+        bearParts.earR = new THREE.Mesh(new THREE.SphereGeometry(0.075, 24, 24), mat);
+        bearParts.armL = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.09, 0.8, 24), mat);
+        bearParts.armR = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.09, 0.8, 24), mat);
+        bearParts.legL = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.11, 0.7, 24), mat);
+        bearParts.legR = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.11, 0.7, 24), mat);
 
-        group.add(torso, head, snout, earL, earR, armL, armR, legL, legR);
+        group.add(bearParts.torso, bearParts.head, bearParts.snout, bearParts.earL, bearParts.earR, bearParts.armL, bearParts.armR, bearParts.legL, bearParts.legR);
         group.traverse(c => { if(c.isMesh) { c.castShadow = true; c.receiveShadow = true; }});
-
-        group.scale.set(1/2.1, 1/2.1, 1/2.1); // Normaliza a 1 metro
         return group;
     }
 
     const humanObj = createHuman();
-    humanObj.position.x = -1.5;
+    humanObj.position.x = -1.2;
     scene.add(humanObj);
 
     const bearObj = createBear();
-    bearObj.position.x = 1.5;
+    bearObj.position.x = 1.2;
     scene.add(bearObj);
 
-    // --- BASE DE DATOS DE OSOS Y COLORES ---
-    const bears = {
-        grizzly: { h: 2.10, w: 270, c: 0x4a2e15 },
-        polar: { h: 2.60, w: 450, c: 0xf2f8ff },
-        kodiak: { h: 2.80, w: 550, c: 0x3d2314 },
-        negro: { h: 1.65, w: 130, c: 0x111111 }
+    // --- BASE DE DATOS DOBLE (MEDIDAS POR POSTURA REAL) ---
+    const bearsData = {
+        grizzly: {
+            standing: { hMin: 1.8, hMax: 2.5, hDef: 2.10, wMin: 150, wMax: 400, wDef: 270, label: "Altura total:" },
+            walking: { hMin: 0.9, hMax: 1.4, hDef: 1.15, wMin: 150, wMax: 400, wDef: 270, label: "Altura a la cruz:" },
+            color: 0x50382b
+        },
+        polar: {
+            standing: { hMin: 2.2, hMax: 3.2, hDef: 2.60, wMin: 300, wMax: 800, wDef: 450, label: "Altura total:" },
+            walking: { hMin: 1.1, hMax: 1.6, hDef: 1.35, wMin: 300, wMax: 800, wDef: 450, label: "Altura a la cruz:" },
+            color: 0xeaeef2
+        },
+        kodiak: {
+            standing: { hMin: 2.4, hMax: 3.5, hDef: 2.90, wMin: 350, wMax: 900, wDef: 550, label: "Altura total:" },
+            walking: { hMin: 1.2, hMax: 1.7, hDef: 1.45, wMin: 350, wMax: 900, wDef: 550, label: "Altura a la cruz:" },
+            color: 0x2e1a15
+        },
+        negro: {
+            standing: { hMin: 1.3, hMax: 2.0, hDef: 1.65, wMin: 60, wMax: 300, wDef: 130, label: "Altura total:" },
+            walking: { hMin: 0.7, hMax: 1.1, hDef: 0.90, wMin: 60, wMax: 300, wDef: 130, label: "Altura a la cruz:" },
+            color: 0x141414
+        }
     };
 
-    // --- FÍSICAS DE DEFORMACIÓN ---
+    let currentPose = 'standing';
+
     const inputs = {
         hHeight: document.getElementById('hHeight'), hWeight: document.getElementById('hWeight'),
         bHeight: document.getElementById('bHeight'), bWeight: document.getElementById('bWeight')
     };
 
+    // --- MOTOR DE FÍSICAS DE SEPARACIÓN PURA (ALTURA VS ANCHO) ---
     function updatePhysics() {
-        // Textos
+        const type = document.getElementById('bearType').value;
+        const currentData = bearsData[type][currentPose];
+
+        // Actualizar textos de la interfaz gráfica
+        document.getElementById('lblBearHeight').innerText = currentData.label;
         document.getElementById('valHHeight').innerText = parseFloat(inputs.hHeight.value).toFixed(2) + 'm';
         document.getElementById('valHWeight').innerText = inputs.hWeight.value + 'kg';
         document.getElementById('valBHeight').innerText = parseFloat(inputs.bHeight.value).toFixed(2) + 'm';
         document.getElementById('valBWeight').innerText = inputs.bWeight.value + 'kg';
 
-        // DEFORMAR HUMANO (Grasa/Músculo según peso y altura)
-        const hH = parseFloat(inputs.hHeight.value);
-        const hW = parseFloat(inputs.hWeight.value);
-        const bmi = hW / (hH * hH); 
-        const hThickness = hH * (0.3 + (bmi / 40)); 
-        humanObj.scale.set(hThickness, hH, hThickness);
-
-        // DEFORMAR OSO Y CAMBIAR COLOR
-        const type = document.getElementById('bearType').value;
-        const bH = parseFloat(inputs.bHeight.value);
-        const bW = parseFloat(inputs.bWeight.value);
-        const bThickness = bH * (0.35 + (bW / 1200)); 
+        // 1. ESCALADO INDEPENDIENTE DEL HUMANO
+        const hH = parseFloat(inputs.hHeight.value); // Altura pura
+        const hW = parseFloat(inputs.hWeight.value); // Peso puro
         
-        bearObj.scale.set(bThickness, bH, bThickness);
-        bearObj.userData.material.color.setHex(bears[type].c);
+        // El peso solo altera los ejes X (ancho) y Z (profundidad). La altura (Y) se mantiene fija.
+        const hWidthFactor = 0.4 + (hW / 140); 
+        humanObj.scale.set(hWidthFactor, hH, hWidthFactor);
+
+
+        // 2. CONFIGURACIÓN ESTRUCTURAL INTERNA DEL OSO (HUESOS)
+        if (currentPose === 'standing') {
+            bearParts.torso.rotation.set(0, 0, 0);
+            bearParts.torso.position.set(0, 1.1, 0);
+            bearParts.head.position.set(0, 1.82, 0.12);
+            bearParts.snout.rotation.set(Math.PI / 2, 0, 0);
+            bearParts.snout.position.set(0, 1.78, 0.33);
+            bearParts.earL.position.set(-0.17, 2.02, 0.08);
+            bearParts.earR.position.set(0.17, 2.02, 0.08);
+            bearParts.armL.rotation.set(0, 0, Math.PI / 5);
+            bearParts.armL.position.set(-0.46, 1.2, 0.05);
+            bearParts.armR.rotation.set(0, 0, -Math.PI / 5);
+            bearParts.armR.position.set(0.46, 1.2, 0.05);
+            bearParts.legL.position.set(-0.21, 0.35, -0.05);
+            bearParts.legR.position.set(0.21, 0.35, -0.05);
+        } else {
+            bearParts.torso.rotation.set(Math.PI / 2, 0, 0);
+            bearParts.torso.position.set(0, 0.85, 0);
+            bearParts.head.position.set(0, 1.1, 0.85);
+            bearParts.snout.rotation.set(0, 0, 0);
+            bearParts.snout.position.set(0, 1.05, 1.15);
+            bearParts.earL.position.set(-0.16, 1.3, 0.8);
+            bearParts.earR.position.set(0.16, 1.3, 0.8);
+            bearParts.armL.rotation.set(0, 0, 0);
+            bearParts.armL.position.set(-0.35, 0.4, 0.5);
+            bearParts.armR.rotation.set(0, 0, 0);
+            bearParts.armR.position.set(0.35, 0.4, 0.5);
+            bearParts.legL.position.set(-0.35, 0.35, -0.5);
+            bearParts.legR.position.set(0.35, 0.35, -0.5);
+        }
+
+        // 3. ESCALADO INDEPENDIENTE DEL OSO
+        const bH = parseFloat(inputs.bHeight.value); // Altura pura del slider
+        const bW = parseFloat(inputs.bWeight.value); // Peso puro del slider
+
+        // Calculamos el grosor basado puramente en el peso seleccionado
+        const bWidthFactor = 0.5 + (bW / 700);
+
+        if (currentPose === 'standing') {
+            // De pie: Altura controla el eje Y. Peso controla ejes X y Z.
+            bearObj.scale.set(bWidthFactor, bH, bWidthFactor);
+            bearObj.position.y = 0;
+        } else {
+            // A 4 patas: La altura del slider es la altura del lomo (eje Y).
+            // La longitud del oso pasa a ser proporcional a su peso y escala base (eje Z).
+            const lengthFactor = 1.3 + (bW / 1000);
+            bearObj.scale.set(bWidthFactor, bH * 1.1, lengthFactor);
+            bearObj.position.y = 0.02 * bH; 
+        }
+        
+        bearObj.userData.material.color.setHex(bearsData[type].color);
     }
 
-    Object.values(inputs).forEach(input => input.addEventListener('input', updatePhysics));
-
-    document.getElementById('btnAverage').addEventListener('click', () => {
+    // --- CAMBIAR RANGOS DINÁMICAMENTE ---
+    function updateSliderRanges() {
         const type = document.getElementById('bearType').value;
-        inputs.bHeight.value = bears[type].h;
-        inputs.bWeight.value = bears[type].w;
+        const currentData = bearsData[type][currentPose];
+
+        inputs.bHeight.min = currentData.hMin;
+        inputs.bHeight.max = currentData.hMax;
+        inputs.bHeight.value = currentData.hDef;
+
+        inputs.bWeight.min = currentData.wMin;
+        inputs.bWeight.max = currentData.wMax;
+        inputs.bWeight.value = currentData.wDef;
+
         updatePhysics();
+    }
+
+    // --- MANEJO DE EVENTOS ---
+    Object.values(inputs).forEach(input => input.addEventListener('input', updatePhysics));
+    document.getElementById('bearType').addEventListener('change', updateSliderRanges);
+
+    document.getElementById('btnAverage').addEventListener('click', updateSliderRanges);
+
+    const btnStanding = document.getElementById('poseStanding');
+    const btnWalking = document.getElementById('poseWalking');
+
+    btnStanding.addEventListener('click', () => {
+        currentPose = 'standing';
+        btnStanding.classList.add('active');
+        btnWalking.classList.remove('active');
+        updateSliderRanges();
     });
 
-    document.getElementById('bearType').addEventListener('change', () => {
-        document.getElementById('btnAverage').click();
+    btnWalking.addEventListener('click', () => {
+        currentPose = 'walking';
+        btnWalking.classList.add('active');
+        btnStanding.classList.remove('active');
+        updateSliderRanges();
     });
 
-    // --- ANIMACIÓN Y REDIMENSIÓN ---
+    // --- REDIMENSIÓN ---
     window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        const isDesktop = window.innerWidth >= 768;
+        const hFactor = isDesktop ? 1 : 0.55;
+        camera.aspect = window.innerWidth / (window.innerHeight * hFactor);
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, window.innerHeight * hFactor);
     });
 
     function animate() {
@@ -352,7 +486,7 @@
         renderer.render(scene, camera);
     }
     
-    updatePhysics();
+    updateSliderRanges();
     animate();
 </script>
 </body>
